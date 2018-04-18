@@ -18,19 +18,19 @@ class MessageView extends Sprite
 	var bg:Sprite = new Sprite();
 	var sign:TextField = new TextField();
 	var boundary:Int = 15;
-	var message:String;
+	var messages:Array<Dynamic>;
 
-	public function new(message:String)
+	public function new(messages:Array<Dynamic>)
 	{
 		super();
 
 		try
 		{
-		this.message = message;
-		format = new TextFormat(Assets.getFont("font/OpenSans-Regular.ttf").fontName, 12);
-		format.align = TextFormatAlign.CENTER;
+			this.messages = messages;
+			format = new TextFormat(Assets.getFont("font/OpenSans-Regular.ttf").fontName, 12);
+			format.align = TextFormatAlign.CENTER;
 
-		addEventListener(Event.ADDED_TO_STAGE, added);
+			addEventListener(Event.ADDED_TO_STAGE, added);
 		}
 		catch (e:Dynamic)
 		{
@@ -53,14 +53,7 @@ class MessageView extends Sprite
 		stage.addEventListener(Event.RESIZE, resize);
 		try
 		{
-			var bigTalk:Array<Dynamic> = Json.parse(Assets.getText("json/big-talk.json"));
-			var iceBreaker:Array<Dynamic> = Json.parse(Assets.getText("json/ice-breaker.json"));
-			var koans:Array<Dynamic> = Json.parse(Assets.getText("json/koans.json"));
-
-			trace(koans[Math.floor(Math.random() * koans.length)]);
-			trace(bigTalk[Math.floor(Math.random() * bigTalk.length)]);
-			trace(iceBreaker[Math.floor(Math.random() * iceBreaker.length)]);
-			var txt:String = koans[Math.floor(Math.random() * koans.length)];
+			var txt:String = messages[Math.floor(Math.random() * messages.length)];
 			txt = "\n" + txt;
 			txt = txt.split(". ").join(".\n");
 			txt = txt.split("\" ").join("\"\n");

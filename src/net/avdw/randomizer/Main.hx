@@ -16,9 +16,18 @@ import openfl.text.TextFormatAlign;
 class Main extends Sprite
 {
 
+	public static var bigTalk:Array<Dynamic>;
+	public static var iceBreaker:Array<Dynamic>;
+	public static var koans:Array<Dynamic>;
+	
 	public function new()
 	{
 		super();
+		
+		bigTalk = Json.parse(Assets.getText("json/big-talk.json"));
+		iceBreaker = Json.parse(Assets.getText("json/ice-breaker.json"));
+		koans = Json.parse(Assets.getText("json/koans.json"));
+		
 		addEventListener(Event.ADDED_TO_STAGE, added);
 	}
 
@@ -26,8 +35,7 @@ class Main extends Sprite
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, added);
 		
-		addChild(new MessageView("meh"));
-		
+		addChild(new Menu());
 	}
 
 }
