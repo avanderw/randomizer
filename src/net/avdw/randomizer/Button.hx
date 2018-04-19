@@ -1,7 +1,9 @@
 package net.avdw.randomizer;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
-import openfl.events.Event;
+import flash.text.TextFormat;
+import openfl.Assets;
+import openfl.filters.DropShadowFilter;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
 
@@ -11,21 +13,38 @@ import openfl.text.TextFieldAutoSize;
  */
 class Button extends Sprite
 {
-	public function new(txt:String, handler:Dynamic->Void) 
+	public function new(txt:String, handler:Dynamic->Void, ?x:Int, ?y:Int)
 	{
 		super();
+
+		if (y == null && x != null)
+		{
+			y = x;
+		}
+		else if (y == null && x == null)
+		{
+			x = y = 0;
+		}
+		this.x = x;
+		this.y = y;
 		
 		var tf:TextField = new TextField();
-		tf.autoSize = TextFieldAutoSize.LEFT;
+		tf.setTextFormat(new TextFormat(Assets.getFont("font/OpenSans-Regular.ttf").fontName, 12));
+		tf.selectable = false;
 		tf.text = txt;
-		addChild(tf);
+		tf.width = 100;
+		tf.autoSize = TextFieldAutoSize.CENTER;
+		tf.y = Math.round(tf.height / 2);
 		
-		graphics.lineStyle(1);
-		graphics.beginFill(0xdddddd);
-		graphics.drawRoundRect(0, 0, tf.width, tf.height, 5);
-		graphics.endFill();
+		var bg:Sprite = new Sprite();
+		bg.graphics.lineStyle(1);
+		bg.graphics.beginFill(0xdddddd);
+		bg.graphics.drawRoundRect(0, 0, 100, Math.round(tf.height * 2), 5);
+		bg.graphics.endFill();
+		addChild(bg);
+		addChild(tf);
 		
 		addEventListener(MouseEvent.CLICK, handler);
 	}
-	
+
 }

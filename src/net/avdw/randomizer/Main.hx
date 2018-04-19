@@ -1,13 +1,8 @@
 package net.avdw.randomizer;
 
-import openfl.events.Event;
-import haxe.Json;
-import openfl.Assets;
+import openfl.display.DisplayObject;
 import openfl.display.Sprite;
-import openfl.text.TextField;
-import openfl.text.TextFieldAutoSize;
-import openfl.text.TextFormat;
-import openfl.text.TextFormatAlign;
+import openfl.events.Event;
 
 /**
  * ...
@@ -15,19 +10,15 @@ import openfl.text.TextFormatAlign;
  */
 class Main extends Sprite
 {
-
-	public static var bigTalk:Array<Dynamic>;
-	public static var iceBreaker:Array<Dynamic>;
-	public static var koans:Array<Dynamic>;
+	var displaying:DisplayObject;
+	var displayHistory:Array<DisplayObject> = new Array();
 	
+
 	public function new()
 	{
 		super();
 		
-		bigTalk = Json.parse(Assets.getText("json/big-talk.json"));
-		iceBreaker = Json.parse(Assets.getText("json/ice-breaker.json"));
-		koans = Json.parse(Assets.getText("json/koans.json"));
-		
+		addChild(new Gestures());
 		addEventListener(Event.ADDED_TO_STAGE, added);
 	}
 
@@ -35,7 +26,44 @@ class Main extends Sprite
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, added);
 		
-		addChild(new Menu());
+		display(new Menu());
+	}
+
+	public function display(displayObject:DisplayObject)
+	{
+		try
+		{
+			if (contains(displaying))
+			{
+				removeChild(displaying);
+				displayHistory.push(displaying);
+			}
+
+			displaying = displayObject;
+			addChild(displaying);
+		}
+		catch (e:Dynamic)
+		{
+			trace(e);
+		}
+	}
+
+	public function restoreDisplay()
+	{
+		try
+		{
+			if (contains(displaying))
+			{
+				removeChild(displaying);
+			}
+
+			displaying = displayHistory.pop();
+			addChild(displaying);
+		}
+		catch (e:Dynamic)
+		{
+			trace(e);
+		}
 	}
 
 }
