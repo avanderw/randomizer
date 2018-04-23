@@ -31,16 +31,19 @@ class MessageView extends Sprite
 
 		try
 		{
+			format = new TextFormat(Assets.getFont("font/OpenSans-Regular.ttf").fontName, 12);
+			format.align = TextFormatAlign.CENTER;
+			
 			tf = new TextField();
 			tf.selectable = false;
 			tf.multiline = true;
 			tf.wordWrap = true;
+			tf.setTextFormat(format);
+			tf.autoSize = TextFieldAutoSize.CENTER;
 			bg.addChild(tf);
 			addChild(bg);
 
 			this.messages = messages;
-			format = new TextFormat(Assets.getFont("font/OpenSans-Regular.ttf").fontName, 12);
-			format.align = TextFormatAlign.CENTER;
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
 		}
@@ -55,6 +58,14 @@ class MessageView extends Sprite
 		try
 		{
 			trace("resize");
+			tf.width = stage.stageWidth - 2 * boundary;
+			
+			bg.graphics.clear();
+			bg.graphics.lineStyle(1, 0x0);
+			bg.graphics.beginFill(0xdddddd);
+			bg.graphics.drawRoundRect(0, 0, tf.width, tf.height, boundary, boundary);
+			bg.graphics.endFill();
+			
 			bg.x = Math.round((stage.stageWidth - bg.width) / 2);
 			bg.y = Math.round((stage.stageHeight - bg.height) / 2);
 			sign.x = Math.round(stage.stageWidth - sign.width - boundary);
@@ -158,16 +169,8 @@ class MessageView extends Sprite
 	{
 		try
 		{
-			tf.width = stage.stageWidth - 2 * boundary;
-			tf.setTextFormat(format);
-			tf.autoSize = TextFieldAutoSize.CENTER;
+			
 			tf.text = message;
-
-			bg.graphics.clear();
-			bg.graphics.lineStyle(1, 0x0);
-			bg.graphics.beginFill(0xdddddd);
-			bg.graphics.drawRoundRect(0, 0, tf.width, tf.height, boundary, boundary);
-			bg.graphics.endFill();
 
 			resize();
 
